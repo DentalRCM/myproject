@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Liability Insurance Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .hidden { display: none; }
+        .wizard { margin: 20px; }
+        .step { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="wizard">
+        <h1>Professional Liability Insurance Application</h1>
+        <form id="insuranceForm">
+            <!-- Section 1: Personal Information -->
+            <div class="step" id="step1">
+                <h2>Step 1: Personal Information</h2>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" required /><br />
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" required /><br />
+                <label for="professionalType">Professional Type:</label>
+                <select id="professionalType" required>
+                    <option value="">Select...</option>
+                    <option value="medical">Medical</option>
+                    <option value="dental">Dental</option>
+                    <option value="vision">Vision</option>
+                    <option value="behavioral">Behavioral</option>
+                    <option value="allied">Allied Health</option>
+                </select><br />
+                <button type="button" onclick="nextStep(1)">Next</button>
+            </div>
+
+            <!-- Section 2: Questionnaire -->
+            <div class="step hidden" id="step2">
+                <h2>Step 2: Questionnaire</h2>
+                <div id="questionnaire"></div>
+                <button type="button" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Section 3: Claims History & Certificate Generation -->
+            <div class="step hidden" id="step3">
+                <h2>Step 3: Claims History</h2>
+                <label for="claimsHistory">Claims History:</label>
+                <textarea id="claimsHistory" required></textarea><br />
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div id="output" class="hidden"></div>
+    </div>
+    <script>
+        function nextStep(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(s => s.classList.add('hidden'));
+            if (step === 1) {
+                steps[1].classList.remove('hidden');
+                loadQuestionnaire();
+            } else if (step === 2) {
+                steps[2].classList.remove('hidden');
+            }
+        }
+
+        function loadQuestionnaire() {
+            const professionalType = document.getElementById('professionalType').value;
+            const questionnaire = document.getElementById('questionnaire');
+            questionnaire.innerHTML = ''; // Clear previous content
+
+            if (professionalType === 'medical') {
+                questionnaire.innerHTML = '<label for="medicalQ">Medical Questionnaire:</label><input type="text" id="medicalQ" required />';
+            } else if (professionalType === 'dental') {
+                questionnaire.innerHTML = '<label for="dentalQ">Dental Questionnaire:</label><input type="text" id="dentalQ" required />';
+            } else if (professionalType === 'vision') {
+                questionnaire.innerHTML = '<label for="visionQ">Vision Questionnaire:</label><input type="text" id="visionQ" required />';
+            } else if (professionalType === 'behavioral') {
+                questionnaire.innerHTML = '<label for="behavioralQ">Behavioral Questionnaire:</label><input type="text" id="behavioralQ" required />';
+            } else if (professionalType === 'allied') {
+                questionnaire.innerHTML = '<label for="alliedQ">Allied Health Questionnaire:</label><input type="text" id="alliedQ" required />';
+            }
+        }
+
+        document.getElementById('insuranceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '<h3>Certificate of Insurance</h3>' + '<p>Thank you for your application!</p>' + '<p>Claims History: ' + document.getElementById('claimsHistory').value + '</p>';
+            outputDiv.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
